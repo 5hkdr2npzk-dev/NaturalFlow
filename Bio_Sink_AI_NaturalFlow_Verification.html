@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bio-Sink AI | NaturalFlow</title>
+<style>
+:root{--bg:#07152f;--panel:#0d2a59;--line:#28558c;--cyan:#35dfd0;--blue:#1689ee;--white:#eff8ff;--muted:#aec5df;--gold:#f3ca73}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#12356b 0,#07152f 48%,#061126 100%);color:var(--white);font-family:Tahoma,Arial,sans-serif;min-height:100vh}
+header{padding:20px 5%;border-bottom:1px solid #1b3c69;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#07152fe8}.logo{font-size:22px;font-weight:900}.logo span{color:var(--cyan)}.tag{font-size:11px;color:var(--muted);margin-top:5px}.chip{border:1px solid #23619a;color:#bcecff;padding:7px 12px;border-radius:22px;font-size:11px}
+main{max-width:1050px;margin:auto;padding:32px 18px 55px}.hero{text-align:center;margin:8px auto 28px}.eyebrow{font-size:11px;color:var(--cyan);letter-spacing:1.5px;font-weight:bold}.hero h1{font-size:clamp(25px,4vw,38px);margin:10px 0}.hero p{color:var(--muted);font-size:14px;line-height:1.8;margin:0 auto;max-width:650px}
+.panel{background:linear-gradient(145deg,#10356b,#0a2550);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 12px 30px #020b1c55}.panel h2{font-size:19px;margin:0 0 7px}.hint{color:var(--muted);font-size:12px;line-height:1.8;margin:0 0 18px}.input-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end}.field label{display:block;font-size:13px;margin-bottom:8px;color:#d6eaff}.field input{width:100%;padding:14px;border-radius:11px;border:1px solid #3970a9;background:#071d3d;color:#fff;font:inherit;font-size:17px;outline:none}.field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #27e1d122}.btn{border:0;border-radius:11px;padding:14px 22px;background:linear-gradient(90deg,#08bfc3,#1689ee);color:#041a35;font-weight:bold;font-size:14px;cursor:pointer}.btn.alt{background:#173e70;color:#d9ecff;border:1px solid #3970a9}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.results{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}.result-card{background:#071e40;border:1px solid #28558c;border-radius:14px;padding:16px;min-height:120px}.result-card small{display:block;color:var(--muted);font-size:11px;margin-bottom:10px}.result-card strong{font-size:18px;line-height:1.5;color:var(--cyan)}.result-card p{font-size:12px;line-height:1.7;color:#d5e9ff;margin:8px 0 0}.explain{margin-top:14px;padding:14px;border-radius:12px;background:#0a3153;border-right:3px solid var(--cyan);font-size:12px;line-height:1.9;color:#e0f1ff}.warning{margin-top:14px;padding:13px 15px;border:1px solid #755d2d;background:#302a1c;color:#f5dca1;border-radius:12px;font-size:11px;line-height:1.9}
+.table-panel{margin-top:18px}.table-wrap{overflow:auto;margin-top:12px}table{border-collapse:collapse;width:100%;min-width:420px;font-size:12px}th,td{padding:10px;border-bottom:1px solid #285183;text-align:center}th{color:#aee9ff;background:#0a2852}td{color:#e4f1ff}.footer{text-align:center;color:#809dbd;font-size:11px;margin-top:25px;line-height:1.8}
+@media(max-width:650px){.input-row{grid-template-columns:1fr}.results{grid-template-columns:1fr}.btn{width:100%}}
+</style>
+</head>
+<body>
+<header><div><div class="logo">Bio-Sink <span>AI</span></div><div class="tag">NaturalFlow · Smart Laboratory Sink</div></div><span class="chip">AI WEEK COMPETITION</span></header>
+<main>
+<section class="hero"><div class="eyebrow">NATURALFLOW PROJECT</div><h1>حاسبة المعادلة الذكية</h1><p>أدخلي الرقم الهيدروجيني (pH) لمعرفة تصنيف العينة، وكمية المعادل المسجلة في جدول المشروع، ونوع المعادل المرتبط بها.</p></section>
+<section class="panel">
+<h2>تحليل العينة</h2><p class="hint">أدخلي قيمة pH من 1 إلى 14، ثم اضغطي على تحليل.</p>
+<div class="input-row"><div class="field"><label for="ph">الرقم الهيدروجيني (pH)</label><input id="ph" type="number" min="1" max="14" step="1" placeholder="مثال: 3"></div><button class="btn" id="calculate">تحليل العينة</button></div>
+<div class="actions"><button class="btn alt" id="clear">مسح</button></div>
+<div class="results" aria-live="polite">
+<div class="result-card"><small>1 · نوع المادة</small><strong id="classification">—</strong><p id="classExplain">سيظهر التصنيف هنا.</p></div>
+<div class="result-card"><small>2 · كمية المعادل في جدول المشروع</small><strong id="quantity">—</strong><p id="quantityExplain">ستظهر الكمية وشرح المطابقة هنا.</p></div>
+<div class="result-card"><small>3 · نوع المعادل</small><strong id="neutralizer">—</strong><p id="neutralizerExplain">ستظهر المادة المرتبطة بالتصنيف هنا.</p></div>
+</div>
+<div class="explain" id="reason">طريقة العمل: يصنّف النظام العينة حسب pH، ثم يبحث عن الرقم نفسه في جدول المشروع. إذا لم تكن هناك قيمة مسجلة، سيخبرك بذلك دون تخمين.</div>
+<div class="warning"><b>تنبيه:</b> الكميات المعروضة هي قيم مرجعية من جدول المشروع وليست جرعات تشغيلية آمنة. لا يمكن تحديد جرعة فعلية من pH وحده؛ يلزم التحقق من نوع المادة وتركيزها وحجم العينة وقياس pH النهائي تحت إشراف المختص.</div>
+</section>
+
+<section class="panel table-panel" id="verification">
+<h2>التحقق العلمي والمعادلات الكيميائية</h2>
+<p class="hint">راجعي تصنيف pH والمعادلة المرتبطة بالمادة قبل اعتماد النتيجة.</p>
+<div class="result-card" style="min-height:auto">
+  <small>المعادلة 1 · تفاعل قشور البيض مع حمض الأسيتيك</small>
+  <strong dir="ltr" style="display:block;font-size:clamp(15px,2.5vw,20px)">CaCO₃ + 2CH₃COOH → Ca(CH₃COO)₂ + CO₂ + H₂O</strong>
+  <p>قشور البيض تحتوي أساساً على كربونات الكالسيوم، ويمكنها التفاعل مع حمض الأسيتيك. هذه معادلة توضيحية لقشور البيض، وليست معادلة لرماد الخشب.</p>
+</div>
+<div class="result-card" style="min-height:auto;margin-top:12px">
+  <small>المعادلة 2 · حمض الأسيتيك مع قاعدة تحتوي على أيونات الهيدروكسيد</small>
+  <strong dir="ltr" style="display:block;font-size:clamp(15px,2.5vw,20px)">CH₃COOH + OH⁻ → CH₃COO⁻ + H₂O</strong>
+  <p>معادلة عامة لتفاعل حمض الأسيتيك مع قاعدة هيدروكسيدية. يلزم معرفة اسم القاعدة الفعلية لتأكيد المعادلة الخاصة بالعينة.</p>
+</div>
+<div class="explain">
+  <b>مراجعة التصنيف:</b> pH أقل من 7 = حمضي، وpH يساوي 7 = متعادل، وpH أكبر من 7 = قاعدي.
+  <br>رماد الخشب خليط تختلف مكوناته، لذلك لا توجد له معادلة كيميائية واحدة ثابتة دون تحليل تركيبه.
+</div>
+<div class="actions"><button class="btn" id="verify">تأكد من نتيجة التحليل</button></div>
+<div class="explain" id="verificationResult" aria-live="polite">بعد تحليل العينة، اضغطي على زر التحقق لمراجعة التصنيف والبيانات والمعادل المقترح.</div>
+</section>
+
+<section class="panel table-panel"><h2>جدول بيانات المشروع</h2><p class="hint">القيم كما وردت في جدول المشروع لعينة حجمها 100 mL.</p>
+<div class="table-wrap"><table><thead><tr><th>pH</th><th>الكمية المسجلة</th><th>الوحدة</th><th>التصنيف</th></tr></thead><tbody>
+<tr><td>1</td><td>1</td><td>g</td><td>حمضي</td></tr><tr><td>2</td><td>0.1</td><td>g</td><td>حمضي</td></tr><tr><td>3</td><td>0.01</td><td>g</td><td>حمضي</td></tr><tr><td>4</td><td>0.001</td><td>g</td><td>حمضي</td></tr><tr><td>5</td><td>0.0001</td><td>g</td><td>حمضي</td></tr><tr><td>6</td><td>0.00001</td><td>g</td><td>حمضي</td></tr><tr><td>7</td><td>غير مسجل</td><td>—</td><td>متعادل</td></tr><tr><td>8</td><td>0.04</td><td>mL</td><td>قاعدي</td></tr><tr><td>9</td><td>0.4</td><td>mL</td><td>قاعدي</td></tr><tr><td>10</td><td>4</td><td>mL</td><td>قاعدي</td></tr><tr><td>11</td><td>40</td><td>mL</td><td>قاعدي</td></tr><tr><td>12</td><td>400</td><td>mL</td><td>قاعدي</td></tr><tr><td>13</td><td>4000</td><td>mL</td><td>قاعدي</td></tr><tr><td>14</td><td>40000</td><td>mL</td><td>قاعدي</td></tr>
+</tbody></table></div></section>
+<div class="footer">Bio-Sink AI · NaturalFlow Graduation Project<br>واجهة تعليمية ومحاكاة فقط — لا تتصل بالحوض أو نظام الصرف الفعلي.</div>
+</main>
+<script>
+const quantities={1:['1','g'],2:['0.1','g'],3:['0.01','g'],4:['0.001','g'],5:['0.0001','g'],6:['0.00001','g'],8:['0.04','mL'],9:['0.4','mL'],10:['4','mL'],11:['40','mL'],12:['400','mL'],13:['4000','mL'],14:['40000','mL']};
+const $=id=>document.getElementById(id);
+function analyze(){const raw=$('ph').value,p=Number(raw);if(raw===''||!Number.isInteger(p)||p<1||p>14){$('classification').textContent='إدخال غير صحيح';$('classExplain').textContent='أدخلي رقماً صحيحاً من 1 إلى 14.';$('quantity').textContent='—';$('quantityExplain').textContent='لا يمكن مطابقة الإدخال.';$('neutralizer').textContent='—';$('neutralizerExplain').textContent='';$('reason').textContent='يرجى التأكد من إدخال قيمة pH صحيحة.';return;}
+const type=p<7?'حمضية':p>7?'قاعدية':'متعادل';$('classification').textContent=type;$('classExplain').textContent=p<7?`pH ${p} أقل من 7، لذلك تصنّف العينة حمضية.`:p>7?`pH ${p} أكبر من 7، لذلك تصنّف العينة قاعدية.`:'pH 7 متعادل.';
+if(p<7){$('neutralizer').textContent='Wood Ash + Eggshells';$('neutralizerExplain').textContent='رماد الخشب + قشور البيض (حسب خريطة المواد في المشروع).'}else if(p>7){$('neutralizer').textContent='Diluted Acetic Acid';$('neutralizerExplain').textContent='حمض الأسيتيك المخفف (حسب خريطة المواد في المشروع).'}else{$('neutralizer').textContent='لا يوجد';$('neutralizerExplain').textContent='لا يقترح النظام معادلاً عند pH 7.';}
+if(quantities[p]){$('quantity').textContent=quantities[p][0]+' '+quantities[p][1];$('quantityExplain').textContent=`هذه هي القيمة المطابقة لـ pH ${p} في جدول المشروع لعينة 100 mL.`;}else{$('quantity').textContent='غير مسجلة';$('quantityExplain').textContent='لا توجد كمية مسجلة عند pH 7؛ لم يتم تخمين قيمة.';}
+$('reason').textContent=`شرح النتيجة: صنّف النظام العينة على أنها ${type} بناءً على قيمة pH ${p}. ثم بحث عن الرقم نفسه في جدول المشروع. ${quantities[p]?'عرض الكمية المسجلة كما هي دون تعديل.':'لم يجد كمية مسجلة، لذلك لم يعرض رقماً.'}`;
+}
+function reset(){ $('ph').value='';['classification','quantity','neutralizer'].forEach(id=>$(id).textContent='—');$('classExplain').textContent='سيظهر التصنيف هنا.';$('quantityExplain').textContent='ستظهر الكمية وشرح المطابقة هنا.';$('neutralizerExplain').textContent='ستظهر المادة المرتبطة بالتصنيف هنا.';$('reason').textContent='طريقة العمل: يصنّف النظام العينة حسب pH، ثم يبحث عن الرقم نفسه في جدول المشروع. إذا لم تكن هناك قيمة مسجلة، سيخبرك بذلك دون تخمين.';}
+
+$('verify').addEventListener('click',()=>{
+  const raw=$('ph').value,p=Number(raw);
+  if(raw===''||!Number.isInteger(p)||p<1||p>14){
+    $('verificationResult').textContent='لم يتم التحقق: أدخلي قيمة pH صحيحة من 1 إلى 14 ثم حلّلي العينة أولاً.';
+    return;
+  }
+  const expected=p<7?'حمضية':p>7?'قاعدية':'متعادل';
+  const hasData=Object.prototype.hasOwnProperty.call(quantities,p);
+  const material=p<7?'Wood Ash + Eggshells':p>7?'Diluted Acetic Acid':'لا يوجد معادل مقترح';
+  $('verificationResult').textContent=`تمت مراجعة قاعدة التصنيف: pH ${p} يصنّف العينة ${expected}. ${hasData?'توجد قيمة مطابقة في جدول المشروع.':'لا توجد كمية مسجلة لهذه القيمة.'} المعادل المعروض حسب خريطة المشروع: ${material}. هذا تحقق من قواعد الموقع والجدول فقط، وليس تصديقاً مخبرياً على سلامة المادة أو الجرعة.`;
+});
+
+$('calculate').addEventListener('click',analyze);$('ph').addEventListener('keydown',e=>{if(e.key==='Enter')analyze();});$('clear').addEventListener('click',reset);
+</script>
+</body></html>
